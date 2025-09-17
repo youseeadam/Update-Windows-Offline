@@ -41,7 +41,7 @@
    Get-WIndowsImage sources\install.wim -index 1
    ```
 1. That will return a string like the following: Version : 10.0.26100.1. You will use the minor version in the next step, the 26100. In most cases the version used in boot.wim and winre.wim will be the same, but you should always check.
-1. Go to Windows Update and search the following: Safe OS Dynamic Update TheMinorVersion, in this example: Safe OS Dynamic Update 26100
+1. Go to Windows Update and search the following: Setup Dynamic Update TheMinorVersion, in this example: Setup Dynamic Update 26100
 1. Download the the latest version for Windows 11 Version, not the server version for X64
 1. Mount the boot.wim Image
 1. Apply the update to the winpe image (the update will fail if not applicable):
