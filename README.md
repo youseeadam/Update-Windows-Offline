@@ -8,7 +8,25 @@
 * The WInRE resides inside the install.wim, so the install.wim must be mounted first.
 * Then mount the WinRE file located at: MounPoint\Windows]System32\Recovery\winrm.wim
 * WinPE is located on the ISO in the sources directory
-### Download the Files you will need ####
+### Download the Files you will need The Easy Way ####
+1. Get the version of WIndows you are using:
+   ```powershell
+   Get-WindowsImage sources\install.wim -index 1
+   ```
+1. This will return the Version Number, for example Version: 26100.6584, the number that is important is the first part, the major build number, the 26100
+2. Go to Windows Update Catalog: https://www.catalog.update.microsoft.com/
+1. Type the following into the search window: **Dynamic Updates Windows _BuildNumber_**, for example Dynamic Updates Windows 26100
+2. This will return a long list, from newest to oldest.
+3. Within that search look in the title for the following two files
+   * Setup Dynamic Updates for [Server|arm64|amd64]: These are for the Boot.wim, and are CAB files
+   * Safe OS Dyanmic Update for [Server|arm64|amd64]: These are for the WinRE.wim and are CAB files
+   * 
+4. To update the base OS (install.wim)
+   1. Go to Windows 11, version 24H2 update history - Microsoft Support : https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
+   1. Go to the most recent non Preview Build for the version, in this example 26100, This will typically be a KB article. Note the KB Article
+   1. Then go to the Microsoft Update Catalog : https://www.catalog.update.microsoft.com/
+   1. In the search criteria enter the KB article, make sure the download the proper version in this case 24H2 for x64 based systems. There are usually 2 updates, but these get applied dynamically.
+### Download the Files you will need The Long Way ####
 1. Get the version of WIndows you are using:
    ```powershell
    Get-WindowsImage sources\install.wim -index 1
@@ -38,7 +56,7 @@
    ```powershell
    Add-WindowsPackage -Path "c:\offline" -PackagePath "Windows11.0-KB5065426-x64.msu" -PreventPending
    ```
-1. Mount the WindowsRE Image
+1. Mount the WindowsRE (WinRE) Image (you must update the base image before mounting the WinRE image)
 1. Apply the update to the WinRE image:
    ```powershell
    Add-WindowsPackage -Path "c:\WinREoffline" -PackagePath "windows11.0-kb5064097-x64.cab" -PreventPending
