@@ -8,7 +8,7 @@
 * The WInRE resides inside the install.wim, so the install.wim must be mounted first.
 * Then mount the WinRE file located at: MounPoint\Windows]System32\Recovery\winrm.wim
 * WinPE is located on the ISO in the sources directory
-# Step by Step instructions #
+### Download the Files you will need ####
 1. Get the version of WIndows you are using:
    ```powershell
    Get-WindowsImage sources\install.wim -index 1
@@ -18,17 +18,26 @@
 1. Go to the most recent non Preview Build for the version, in this example 26100, This will typically be a KB article. Note the KB Article
 1. Then go to the Microsoft Update Catalog : https://www.catalog.update.microsoft.com/
 1. In the search criteria enter the KB article, make sure the download the proper version in this case 24H2 for x64 based systems. There are usually 2 updates, but these get applied dynamically.
-1. After mounting the install.wim, apply the update, referencing the latest MSU (the one with the larger KB version, for example from an elevated PowerShell Terminal. This will automatically apply both updates if needed (a Dynamic Update) and can take several minutes even after it shows the update has been applied:
-   ```powershell
-   Add-WindowsPackage -Path "c:\offline" -PackagePath "Windows11.0-KB5065426-x64.msu" -PreventPending
-   ```
-1. Get the version and service version of the WINRE.wim file by running the command:
+1. Mount the install.wim file to get the build version of WinRE
+2. 1. Get the version and service version of the WINRE.wim file by running the command:
    ```powershel
    Get-WIndowsImage MounPoint\Windows\System32\Recovery\winrm.wim -index 1
    ```
 1. That will return a string like the following: Version : 10.0.26100.1. You will use the minor version in the next step, the 26100
 1. Go to Windows Update and search the following: "Safe OS Dynamic Update TheMinorVersion", in this example: Safe OS Dynamic Update 26100
 1. Download the the latest version for Windows 11 Version, not the server version for X64
+2. Get the version and service version of the boot.wim file by running the command:
+   ```powershell
+   Get-WIndowsImage sources\boot.wim -index 1
+   ```
+1. That will return a string like the following: Version : 10.0.26100.1. You will use the minor version in the next step, the 26100. In most cases the version used in boot.wim and winre.wim will be the same, but you should always check.
+1. Go to Windows Update and search the following: Setup Dynamic Update TheMinorVersion, in this example: Setup Dynamic Update 26100
+1. Download the the latest version for Windows 11 Version, not the server version for X64
+### Update the Image ###
+1. After mounting the install.wim, apply the update, referencing the latest MSU (the one with the larger KB version, for example from an elevated PowerShell Terminal. This will automatically apply both updates if needed (a Dynamic Update) and can take several minutes even after it shows the update has been applied:
+   ```powershell
+   Add-WindowsPackage -Path "c:\offline" -PackagePath "Windows11.0-KB5065426-x64.msu" -PreventPending
+   ```
 1. Mount the WindowsRE Image
 1. Apply the update to the WinRE image:
    ```powershell
@@ -36,13 +45,6 @@
    ```
 1. Dismount the WinRE image
 1. Dismount the install.wim
-1. Get the version and service version of the boot.wim file by running the command:
-   ```powershell
-   Get-WIndowsImage sources\install.wim -index 1
-   ```
-1. That will return a string like the following: Version : 10.0.26100.1. You will use the minor version in the next step, the 26100. In most cases the version used in boot.wim and winre.wim will be the same, but you should always check.
-1. Go to Windows Update and search the following: Setup Dynamic Update TheMinorVersion, in this example: Setup Dynamic Update 26100
-1. Download the the latest version for Windows 11 Version, not the server version for X64
 1. Mount the boot.wim Image
 1. Apply the update to the winpe image (the update will fail if not applicable):
    ```powershell
