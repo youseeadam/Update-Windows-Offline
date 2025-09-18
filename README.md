@@ -19,14 +19,14 @@
 1. Then go to the Microsoft Update Catalog : https://www.catalog.update.microsoft.com/
 1. In the search criteria enter the KB article, make sure the download the proper version in this case 24H2 for x64 based systems. There are usually 2 updates, but these get applied dynamically.
 1. Mount the install.wim file to get the build version of WinRE
-2. 1. Get the version and service version of the WINRE.wim file by running the command:
+1. Get the version and service version of the WINRE.wim file by running the command:
    ```powershel
    Get-WIndowsImage MounPoint\Windows\System32\Recovery\winrm.wim -index 1
    ```
 1. That will return a string like the following: Version : 10.0.26100.1. You will use the minor version in the next step, the 26100
 1. Go to Windows Update and search the following: "Safe OS Dynamic Update TheMinorVersion", in this example: Safe OS Dynamic Update 26100
 1. Download the the latest version for Windows 11 Version, not the server version for X64
-2. Get the version and service version of the boot.wim file by running the command:
+1. Get the version and service version of the boot.wim file by running the command:
    ```powershell
    Get-WIndowsImage sources\boot.wim -index 1
    ```
@@ -48,7 +48,7 @@
 1. Mount the boot.wim Image
 1. Apply the update to the winpe image (the update will fail if not applicable):
    ```powershell
-   Add-WindowsPackage -Path "c:\WinPEoffline" -PackagePath "windows11.0-kb5064097-x64.cab" -PreventPending
+   Add-WindowsPackage -Path "c:\WinPEoffline" -PackagePath "windows11.0-kb5066990-x64.cab" -PreventPending
    ```
 1. Dismount the boot.wim
 1. Once you have updated all the files, you can then use WIndows System Image Manager to open the WIM and build a catalog file
