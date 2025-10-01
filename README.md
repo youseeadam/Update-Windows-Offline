@@ -20,11 +20,11 @@
 
 1. Go to https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 2. Find the current release Build date
-When it comes to Windows udpates, there are three types
+1. When it comes to Windows udpates, there are three types
 * Preview, for example: _September 29, 2025—KB5065789 (OS Build 26100.6725) Preview_
 * Release, for example: _September 9, 2025—KB5065426 (OS Build 26100.6584)_
 * Out-of-band, for example: _September 22, 2025—KB5068221 (OS Build 26100.6588) Out-of-band_
-Notice in the above examples that the September 9, 20205 is the most recent stable build, we will use that as the example. Depending on when you read this, the dates and articles will change.
+4. Notice in the above examples that the September 9, 20205 is the most recent stable build, we will use that as the example. Depending on when you read this, the dates and articles will change.
 
 ### Download the Files you will need The Easy Way ####
 
