@@ -40,6 +40,7 @@
    * If I click on _2025-09 Setup Dynamic Update for Windows 11 Version 24H2 for x64-based Systems (KB5066990)_ in the description it says: Description: This update makes improvements to Windows setup binaries or any files that setup uses for feature updates in Windows. That means this is applied to the boot.wim file, and is a pretty small download
 6. To download the Windows update (for install.wim), Using the KB number that was from the Find enter that into the search bar.
 7. If I click on the link _2025-09 Cumulative Update for Windows 11 Version 24H2 for x64-based Systems (KB5065426) (26100.6584)_, notice the version matches the version from the update history, and it referneces Security Updates, and is a larger download size.
+8. If you click on the Package Details tab, you will see a section This update has been replaced by the following udpates.  In most cases those will be pointing to Preview or Out-of-band udaptes.
 
 ### Update the Image ###
 
