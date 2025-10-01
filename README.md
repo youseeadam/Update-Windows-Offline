@@ -8,50 +8,41 @@
 * The WInRE resides inside the install.wim, so the install.wim must be mounted first.
 * Then mount the WinRE file located at: MounPoint\Windows]System32\Recovery\winrm.wim
 * WinPE is located on the ISO in the sources directory
-### Download the Files you will need The Easy Way ####
+
+### Figure out your current build version ###
 1. Get the version of WIndows you are using:
    ```powershell
    Get-WindowsImage sources\install.wim -index 1
    ```
 1. This will return the Version Number, for example Version: 26100.6584, the number that is important is the first part, the major build number, the 26100
-2. Go to Windows Update Catalog: https://www.catalog.update.microsoft.com/
+
+### Find the current release date ###
+
+1. Go to https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
+2. Find the current release Build date
+When it comes to Windows udpates, there are three types
+* Preview, for example: _September 29, 2025—KB5065789 (OS Build 26100.6725) Preview_
+* Release, for example: _September 9, 2025—KB5065426 (OS Build 26100.6584)_
+* Out-of-band, for example: _September 22, 2025—KB5068221 (OS Build 26100.6588) Out-of-band_
+Notice in the above examples that the September 9, 20205 is the most recent stable build, we will use that as the example. Depending on when you read this, the dates and articles will change.
+
+### Download the Files you will need The Easy Way ####
+
+1. Go to Windows Update Catalog: https://www.catalog.update.microsoft.com/
 1. Type the following into the search window: **Dynamic Updates Windows _BuildNumber_**, for example Dynamic Updates Windows 26100
-2. This will return a long list, from newest to oldest.
-3. Within that search look in the title for the following two files
+2. In the list it returns, you will want to focus on the Last udpate date corrisponding to what Relase date above
+3. This will return a long list, from newest to oldest.
+4. Within that search look in the title for the following two files, make sure to choose the architecutre you are using and the build date, for example September 9 2025, for example amd64
    * Setup Dynamic Updates for [Server|arm64|amd64]: These are for the Boot.wim, and are CAB files
    * Safe OS Dyanmic Update for [Server|arm64|amd64]: These are for the WinRE.wim and are CAB files
-   * 
-4. To update the base OS (install.wim)
-   1. Go to Windows 11, version 24H2 update history - Microsoft Support : https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
-   1. Go to the most recent non Preview Build for the version, in this example 26100, This will typically be a KB article. Note the KB Article
-   1. Then go to the Microsoft Update Catalog : https://www.catalog.update.microsoft.com/
-   1. In the search criteria enter the KB article, make sure the download the proper version in this case 24H2 for x64 based systems. There are usually 2 updates, but these get applied dynamically.
-### Download the Files you will need The Long Way ####
-1. Get the version of WIndows you are using:
-   ```powershell
-   Get-WindowsImage sources\install.wim -index 1
-   ```
-1. This will return a version number, for example Version : 10.0.26100.1. The minor version is what we need, in this example 26100
-1. Go to Windows 11, version 24H2 update history - Microsoft Support : https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
-1. Go to the most recent non Preview Build for the version, in this example 26100, This will typically be a KB article. Note the KB Article
-1. Then go to the Microsoft Update Catalog : https://www.catalog.update.microsoft.com/
-1. In the search criteria enter the KB article, make sure the download the proper version in this case 24H2 for x64 based systems. There are usually 2 updates, but these get applied dynamically.
-1. Mount the install.wim file to get the build version of WinRE
-1. Get the version and service version of the WINRE.wim file by running the command:
-   ```powershel
-   Get-WIndowsImage MounPoint\Windows\System32\Recovery\winrm.wim -index 1
-   ```
-1. That will return a string like the following: Version : 10.0.26100.1. You will use the minor version in the next step, the 26100
-1. Go to Windows Update and search the following: "Safe OS Dynamic Update TheMinorVersion", in this example: Safe OS Dynamic Update 26100
-1. Download the the latest version for Windows 11 Version, not the server version for X64
-1. Get the version and service version of the boot.wim file by running the command:
-   ```powershell
-   Get-WIndowsImage sources\boot.wim -index 1
-   ```
-1. That will return a string like the following: Version : 10.0.26100.1. You will use the minor version in the next step, the 26100. In most cases the version used in boot.wim and winre.wim will be the same, but you should always check.
-1. Go to Windows Update and search the following: Setup Dynamic Update TheMinorVersion, in this example: Setup Dynamic Update 26100
-1. Download the the latest version for Windows 11 Version, not the server version for X64
+5. Click on the link for the files you need, this will tell you if they are Windows udpates, winre updates, or setup file updates
+   * For example if I click on _2025-09 Safe OS Dynamic Update for Microsoft server operating system version 24H2 for x64-based Systems (KB5064097)_ in the description it says Description: This update makes improvements to the Windows Recovery Environment (WinRE) for Microsoft server operating system version 24H2.  That means this download will apply to the WinRE.wim file, and is a pretty small download.
+   * If I click on _2025-09 Setup Dynamic Update for Windows 11 Version 24H2 for x64-based Systems (KB5066990)_ in the description it says: Description: This update makes improvements to Windows setup binaries or any files that setup uses for feature updates in Windows. That means this is applied to the boot.wim file, and is a pretty small download
+6. To download the Windows update (for install.wim), Using the KB number that was from the Find enter that into the search bar.
+7. If I click on the link _2025-09 Cumulative Update for Windows 11 Version 24H2 for x64-based Systems (KB5065426) (26100.6584)_, notice the version matches the version from the update history, and it referneces Security Updates, and is a larger download size.
+
 ### Update the Image ###
+
 1. After mounting the install.wim, apply the update, referencing the latest MSU (the one with the larger KB version, for example from an elevated PowerShell Terminal. This will automatically apply both updates if needed (a Dynamic Update) and can take several minutes even after it shows the update has been applied:
    ```powershell
    Add-WindowsPackage -Path "c:\offline" -PackagePath "Windows11.0-KB5065426-x64.msu" -PreventPending
